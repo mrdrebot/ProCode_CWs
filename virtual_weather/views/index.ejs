@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <hr>
+    <form class="insert">
+      <h3>Add new day</h3>
+      <input type="date" name="date" id="date">
+      <input type="text" name="temperature" id="temperature" placeholder="temperature, &deg;C">
+      <input type="text" name="pressure" id="pressure" placeholder="pressure, mm">
+      <input type="text" name="humidity" id="humidity" placeholder="humidity, %">
+      <input type="text" name="wind" id="wind" placeholder="wind, m/s">
+      <br>
+      <br>
+      <input type="submit" value = "Save">
+    </form>
+    <hr>
+    <div class="answ"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="./javascripts/main.js"></script>
+  </body>
+</html>

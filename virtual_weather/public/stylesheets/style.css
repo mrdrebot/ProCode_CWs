@@ -1,0 +1,45 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+
+.cross {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  position: relative;
+  z-index: 1;
+  margin-left: 5px;
+  cursor: pointer; }
+
+.cross:before {
+  content: '+';
+  color: red;
+  position: absolute;
+  z-index: 2;
+  transform: rotate(45deg);
+  font-size: 27px;
+  line-height: 1;
+  top: -5px;
+  left: -1px;
+  transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85); }
+
+.cross:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background: red;
+  z-index: 1; }
+
+.cross:hover:after {
+  transform: scale(1); }
+
+.cross:hover:before {
+  transform: scale(0.8) rotate(45deg);
+  color: #fff; }
+
+/*# sourceMappingURL=style.css.map */

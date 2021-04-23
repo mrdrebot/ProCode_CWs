@@ -1,26 +1,29 @@
 const mongoose = require('mongoose');
 const generalSchema = require('./schema');
 const path = require('path');
+const { createHash } = require('crypto');
 
-generalSchema.statics.createUserInDB = async function(insData) {
-    const newUser = {
-        name: insData.name,
-        password: insData.password,
-        email: insData.email,
-    };
+generalSchema.virtual("hash")
+.set(function (param) {
+    const hash = createHash('sha256');
+    hash.update(param);
+    this.password = hash.digest('hex');
+});
 
-    return this.create(newUser)
+generalSchema.statics.createUserInDB = async function(newUserData) {
+    return this.create(newUserData)
             .then(r => 'User added to base!')
             .catch(err => {
                 return err;
             });
 };
 
-generalSchema.statics.validateUserData = async function(data) {
-    const { name, password } = data;
-    const foundUser = await this.find({ name: name });
+generalSchema.statics.findUserByName = async function(name) {
+    return await this.find({ name: name });
+};
 
-    if (foundUser[0].password === password) {
+generalSchema.methods.validateUserPassword = function(password) {
+    if (this.password === password) {
         return true;
     } else {
         return false;

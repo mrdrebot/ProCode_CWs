@@ -5,32 +5,9 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('mongodb-mongoose:server');
+var debug = require('debug')('socket-io:server');
 var http = require('http');
-const mongoose = require('mongoose');
-
-const { dbHost, dbPort, dbName, options } = require('../config/db');
-
-// const init = () => new Promise((resolve, reject) => {
-const init = () => {
-  mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`, options);
-  const db = mongoose.connection;
-
-  db.once('error', (err) => {
-    console.log('DB ERROR:', err);
-  });
-
-  db.once('open', () => {
-    console.log('Connected to DB!', `${dbHost}:${dbPort}`);
-  });
-
-  db.once('close', () => {
-    console.log('Closed connection to DB!');
-  });
-// });
-};
-
-init();
+const wsServer = require('../ws');
 
 /**
  * Get port from environment and store in Express.
@@ -44,6 +21,12 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/**
+ * Crete WS server
+ */
+
+wsServer(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -107,9 +90,6 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  
-  console.log(`Server Node.js started`, `${addr.port}`);
-
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;

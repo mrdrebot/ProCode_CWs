@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+const session = require('express-session');
+const FilesStore = require('session-file-store')(session);
+const passport = require('passport');
 
 var indexRouter = require('./routes/index');
 
@@ -24,6 +27,24 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+  session({
+    store: new FilesStore(),
+    secret: 'qwerty',
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      maxAge: 60*60*100,
+    },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+require('./config-password');
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', indexRouter);
 
